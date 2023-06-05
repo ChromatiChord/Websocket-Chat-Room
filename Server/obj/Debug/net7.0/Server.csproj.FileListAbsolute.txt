@@ -1,0 +1,15 @@
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\bin\Debug\net7.0\Server.exe
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\bin\Debug\net7.0\Server.deps.json
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\bin\Debug\net7.0\Server.runtimeconfig.json
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\bin\Debug\net7.0\Server.dll
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\bin\Debug\net7.0\Server.pdb
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.csproj.AssemblyReference.cache
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.AssemblyInfoInputs.cache
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.AssemblyInfo.cs
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.csproj.CoreCompileInputs.cache
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.dll
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\refint\Server.dll
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.pdb
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\Server.genruntimeconfig.cache
+C:\Users\William\Desktop\Languages\Csharp\Messaging\Server\obj\Debug\net7.0\ref\Server.dll
