@@ -1,4 +1,3 @@
-using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,12 +7,6 @@ public static class ClientHelpers
     {
         var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
         return Convert.ToBase64String(plainTextBytes);
-    }
-
-    public static string Base64Decode(string base64EncodedData) 
-    {
-        var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
-        return Encoding.UTF8.GetString(base64EncodedBytes);
     }
 
     public static string GetHash(string input)
