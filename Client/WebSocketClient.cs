@@ -59,12 +59,6 @@ public class WebSocketClient
     public async Task SendMessageAsync(string message, string username)
     {
         string finalSendMessage = $"{username}: {message}";
-        // if (_friendPublicKey != "") {
-        //     // string ownPrivateEncryption =  _encryption.EncryptString($"{username}: {message}", _privateKey);
-        //     // string otherPublicEncryption =  _encryption.EncryptString(ownPrivateEncryption, _friendPublicKey);
-        //     string otherPublicEncryption =  _encryption.EncryptString($"{username}: {message}", _friendPublicKey);
-        //     finalSendMessage = otherPublicEncryption;
-        // } 
 
         var sendBuffer = Encoding.UTF8.GetBytes(finalSendMessage);
         await _client.SendAsync(new ArraySegment<byte>(sendBuffer), WebSocketMessageType.Text, endOfMessage: true, CancellationToken.None);
@@ -86,18 +80,6 @@ public class WebSocketClient
 
             string encryptedRecievedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
             string receivedMessage = encryptedRecievedMessage;
-
-            // if (!receivedMessage.Contains("<RSAKeyValue>")) {
-            //     // string ownPrivateDecryption = _encryption.DecryptString(encryptedRecievedMessage, _privateKey);
-            //     // string friendPublicDecryption = _encryption.DecryptString(ownPrivateDecryption, _friendPublicKey);
-            //     Console.WriteLine("Decrypting!");
-            //     Console.WriteLine(_privateKey);
-            //     Console.WriteLine("SPACECECECECEECE");
-            //     Console.WriteLine(encryptedRecievedMessage);
-            //     string ownPrivateDecryption = _encryption.DecryptString(encryptedRecievedMessage, _privateKey);
-            //     Console.WriteLine(ownPrivateDecryption);
-            //     receivedMessage = ownPrivateDecryption;
-            // }
 
 
             // Extract the public key and the rest of the message

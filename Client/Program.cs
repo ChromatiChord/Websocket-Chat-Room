@@ -33,6 +33,7 @@
         if (creationPath == "create") {
                 Console.Write("Enter your RoomID: ");
                 roomID = Console.ReadLine() ?? "123";
+                Console.WriteLine($"Room {roomID} Created!");
 
                 string creationCredentials = ClientHelpers.Base64Encode(String.Format("{0}:{1}", "/////////CREATE_NEW_ROOM//////////", ClientHelpers.GetHash(roomID)));
                 await client.ConnectAsync(WEBSOCKET_ADDRESS, creationCredentials);
