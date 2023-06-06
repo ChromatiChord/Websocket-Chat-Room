@@ -47,15 +47,14 @@ public class WebSocketHandler
             else
             {
                 string receivedString = Encoding.UTF8.GetString(buffer, 0, receivedResult.Count);
-                if (!receivedString.Contains(":::::")) {
-                    Console.WriteLine(receivedString);
+                Console.WriteLine(receivedString);
+                Console.WriteLine("-------------------------------------");
 
-                    foreach (var socket in _sockets)
+                foreach (var socket in _sockets)
+                {
+                    if (socket.WebSocket.State == WebSocketState.Open && socket.RoomID == roomID && socket.WebSocket != webSocket)
                     {
-                        if (socket.WebSocket.State == WebSocketState.Open && socket.RoomID == roomID && socket.WebSocket != webSocket)
-                        {
-                            await socket.WebSocket.SendAsync(new ArraySegment<byte>(buffer, 0, receivedResult.Count), WebSocketMessageType.Text, receivedResult.EndOfMessage, CancellationToken.None);
-                        }
+                        await socket.WebSocket.SendAsync(new ArraySegment<byte>(buffer, 0, receivedResult.Count), WebSocketMessageType.Text, receivedResult.EndOfMessage, CancellationToken.None);
                     }
                 }
             }

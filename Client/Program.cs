@@ -12,18 +12,7 @@
 
         // INITIAL USER INPUT
         Console.Write("Enter your username: ");
-        bool escape = false;
-        string inputName = "";
-        while (!escape) {
-            inputName = Console.ReadLine() ?? "USER";
-            if (!inputName.Contains(",")) {
-                escape = true;
-            } else {
-                Console.WriteLine("\',\' is an illegal character, try again.");
-            }  
-
-        }
-        string username = $"{publicKey},{inputName}";
+        string username = Console.ReadLine() ?? "USER";
 
         Console.Write("Would you like to Join or Create a Room? (join/create): ");
         string creationPath = Console.ReadLine() ?? "join";
@@ -66,7 +55,7 @@
 
         while (true)
         {
-            Console.Write($"{inputName}: ");
+            Console.Write($"{username}:222222: ");
             string message = Console.ReadLine() ?? "MESSAGE";
             if (message == "exit")
             {

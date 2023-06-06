@@ -79,37 +79,15 @@ public class WebSocketClient
             }
 
             string encryptedRecievedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
-            string receivedMessage = encryptedRecievedMessage;
-
-
-            // Extract the public key and the rest of the message
-            string publicKey = "";
-            string restOfMessage = "";
-
-            int commaIndex = receivedMessage.IndexOf(",");
-            if (commaIndex >= 0)
-            {
-                publicKey = receivedMessage.Substring(0, commaIndex);
-                restOfMessage = receivedMessage.Substring(commaIndex + 1);
-            } else {
-                restOfMessage = receivedMessage;
-            }
-
-            if (_friendPublicKey == "") {
-                _friendPublicKey = publicKey;
-            }
-
-            string[] newy = receivedMessage.Split(new char[] {',', ' ', ':'}, StringSplitOptions.RemoveEmptyEntries);
-            string friendUsername = (newy[1]);
+            
+            // if (_friendPublicKey == "") {
+            //     _friendPublicKey = publicKey;
+            // }
 
             ClearCurrentConsoleLine();
-            Console.WriteLine(restOfMessage);
+            Console.WriteLine(encryptedRecievedMessage);
 
-            
-            string[] parts = username.Split(",");
-            string sanitsiedUsername = parts[1].Trim();
-
-            Console.Write($"{sanitsiedUsername}: ");
+            Console.Write($"{username}:111: ");
         }
     }
 

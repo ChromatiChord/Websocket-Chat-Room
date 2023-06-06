@@ -13,6 +13,7 @@ public class WebSocketServer
         listener.AuthenticationSchemes = AuthenticationSchemes.Basic;
         listener.Start();
 
+        Console.Clear();
         Console.WriteLine("Listening...");
 
         while (true)
