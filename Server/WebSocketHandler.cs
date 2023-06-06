@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Collections.Concurrent;
+using System.Linq;
 
 public class WebSocketHandler
 {
@@ -17,6 +18,11 @@ public class WebSocketHandler
             WebSocket = webSocket,
             RoomID = roomID
         };
+        
+        if (IsRoomFull(roomID)) {
+            await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Room is full", CancellationToken.None);
+            return; 
+        }
 
         _sockets.Add(webSocketData);
         byte[] buffer = new byte[1024];
@@ -41,13 +47,15 @@ public class WebSocketHandler
             else
             {
                 string receivedString = Encoding.UTF8.GetString(buffer, 0, receivedResult.Count);
-                Console.WriteLine(receivedString);
+                if (!receivedString.Contains(":::::")) {
+                    Console.WriteLine(receivedString);
 
-                foreach (var socket in _sockets)
-                {
-                    if (socket.WebSocket.State == WebSocketState.Open && socket.RoomID == roomID && socket.WebSocket != webSocket)
+                    foreach (var socket in _sockets)
                     {
-                        await socket.WebSocket.SendAsync(new ArraySegment<byte>(buffer, 0, receivedResult.Count), WebSocketMessageType.Text, receivedResult.EndOfMessage, CancellationToken.None);
+                        if (socket.WebSocket.State == WebSocketState.Open && socket.RoomID == roomID && socket.WebSocket != webSocket)
+                        {
+                            await socket.WebSocket.SendAsync(new ArraySegment<byte>(buffer, 0, receivedResult.Count), WebSocketMessageType.Text, receivedResult.EndOfMessage, CancellationToken.None);
+                        }
                     }
                 }
             }
@@ -55,5 +63,10 @@ public class WebSocketHandler
         
         Console.WriteLine("Closing Sockets");
         _sockets = new ConcurrentBag<WebSocketData>(_sockets.Where(socket => socket.WebSocket != webSocket));
+    }
+
+    private bool IsRoomFull(string roomID) {
+        // Count the number of WebSocketData objects with the same roomID
+        return _sockets.Count(socket => socket.RoomID == roomID) >= 2;
     }
 }

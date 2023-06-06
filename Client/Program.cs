@@ -4,11 +4,26 @@
 
     static async Task Main(string[] args)
     {
-        WebSocketClient client = new WebSocketClient();
+
+        Encryption encryptionObject = new Encryption();
+        (string publicKey, string privateKey) = encryptionObject.GenerateKeyPair();
+
+        WebSocketClient client = new WebSocketClient(publicKey, privateKey);
 
         // INITIAL USER INPUT
         Console.Write("Enter your username: ");
-        string username = Console.ReadLine() ?? "USER";
+        bool escape = false;
+        string inputName = "";
+        while (!escape) {
+            inputName = Console.ReadLine() ?? "USER";
+            if (!inputName.Contains(",")) {
+                escape = true;
+            } else {
+                Console.WriteLine("\',\' is an illegal character, try again.");
+            }  
+
+        }
+        string username = $"{publicKey},{inputName}";
 
         Console.Write("Would you like to Join or Create a Room? (join/create): ");
         string creationPath = Console.ReadLine() ?? "join";
@@ -50,7 +65,7 @@
 
         while (true)
         {
-            Console.Write($"{username}: ");
+            Console.Write($"{inputName}: ");
             string message = Console.ReadLine() ?? "MESSAGE";
             if (message == "exit")
             {

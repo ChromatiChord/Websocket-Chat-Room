@@ -9,6 +9,18 @@ public class WebSocketClient
 {
     private ClientWebSocket _client = new ClientWebSocket();
 
+    private Encryption _encryption = new Encryption();
+
+    private string _friendPublicKey = "";
+    private string _publicKey;
+    private string _privateKey;
+
+    public WebSocketClient(string publicKey, string privateKey)
+    {
+        _publicKey = publicKey;
+        _privateKey = privateKey;
+    }
+
     public async Task ConnectAsync(string address, string base64Credentials)
     {
         try
@@ -46,7 +58,15 @@ public class WebSocketClient
 
     public async Task SendMessageAsync(string message, string username)
     {
-        var sendBuffer = Encoding.UTF8.GetBytes($"{username}: {message}");
+        string finalSendMessage = $"{username}: {message}";
+        // if (_friendPublicKey != "") {
+        //     // string ownPrivateEncryption =  _encryption.EncryptString($"{username}: {message}", _privateKey);
+        //     // string otherPublicEncryption =  _encryption.EncryptString(ownPrivateEncryption, _friendPublicKey);
+        //     string otherPublicEncryption =  _encryption.EncryptString($"{username}: {message}", _friendPublicKey);
+        //     finalSendMessage = otherPublicEncryption;
+        // } 
+
+        var sendBuffer = Encoding.UTF8.GetBytes(finalSendMessage);
         await _client.SendAsync(new ArraySegment<byte>(sendBuffer), WebSocketMessageType.Text, endOfMessage: true, CancellationToken.None);
         ClearCurrentConsoleLine();
     }
@@ -64,10 +84,50 @@ public class WebSocketClient
                 break;
             }
 
-            var receivedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
+            string encryptedRecievedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
+            string receivedMessage = encryptedRecievedMessage;
+
+            // if (!receivedMessage.Contains("<RSAKeyValue>")) {
+            //     // string ownPrivateDecryption = _encryption.DecryptString(encryptedRecievedMessage, _privateKey);
+            //     // string friendPublicDecryption = _encryption.DecryptString(ownPrivateDecryption, _friendPublicKey);
+            //     Console.WriteLine("Decrypting!");
+            //     Console.WriteLine(_privateKey);
+            //     Console.WriteLine("SPACECECECECEECE");
+            //     Console.WriteLine(encryptedRecievedMessage);
+            //     string ownPrivateDecryption = _encryption.DecryptString(encryptedRecievedMessage, _privateKey);
+            //     Console.WriteLine(ownPrivateDecryption);
+            //     receivedMessage = ownPrivateDecryption;
+            // }
+
+
+            // Extract the public key and the rest of the message
+            string publicKey = "";
+            string restOfMessage = "";
+
+            int commaIndex = receivedMessage.IndexOf(",");
+            if (commaIndex >= 0)
+            {
+                publicKey = receivedMessage.Substring(0, commaIndex);
+                restOfMessage = receivedMessage.Substring(commaIndex + 1);
+            } else {
+                restOfMessage = receivedMessage;
+            }
+
+            if (_friendPublicKey == "") {
+                _friendPublicKey = publicKey;
+            }
+
+            string[] newy = receivedMessage.Split(new char[] {',', ' ', ':'}, StringSplitOptions.RemoveEmptyEntries);
+            string friendUsername = (newy[1]);
+
             ClearCurrentConsoleLine();
-            Console.WriteLine(receivedMessage);
-            Console.Write($"{username}: ");
+            Console.WriteLine(restOfMessage);
+
+            
+            string[] parts = username.Split(",");
+            string sanitsiedUsername = parts[1].Trim();
+
+            Console.Write($"{sanitsiedUsername}: ");
         }
     }
 
